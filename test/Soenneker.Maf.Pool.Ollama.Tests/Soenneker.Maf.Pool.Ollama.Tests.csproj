@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Soenneker.Maf.Pool.Ollama.csproj" />
+        <ProjectReference Include="..\..\src\Soenneker.Maf.Pool.Ollama\Soenneker.Maf.Pool.Ollama.csproj" />
     </ItemGroup>
 
     <ItemGroup>
