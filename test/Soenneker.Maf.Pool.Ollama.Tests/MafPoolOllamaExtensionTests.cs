@@ -1,15 +1,14 @@
-using Xunit;
 
 namespace Soenneker.Maf.Pool.Ollama.Tests;
 
-[Collection("Collection")]
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
 public sealed class MafPoolOllamaExtensionTests
 {
-    public MafPoolOllamaExtensionTests(ITestOutputHelper output)
+    public MafPoolOllamaExtensionTests( output)
     {
     }
 
-    [Fact]
+    [Test]
     public void Default()
     {
 
