@@ -16,7 +16,7 @@ public static class MafPoolOllamaExtension
     /// <summary>
     /// Registers an Ollama model in the agent pool with optional rate/token limits.
     /// </summary>
-    /// <param name="pool">The MAF pool to register with.</param>
+    /// <param name="pool">Pool that supplies the reusable resource.</param>
     /// <param name="poolId">Identifier for the sub-pool.</param>
     /// <param name="key">Unique key for this agent entry.</param>
     /// <param name="modelId">Ollama model id (e.g. llama3.2).</param>
@@ -27,6 +27,7 @@ public static class MafPoolOllamaExtension
     /// <param name="tokensPerDay">Optional tokens per day limit.</param>
     /// <param name="instructions">Optional system instructions for the agent.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>A task that completes when the ollama addition is complete.</returns>
     public static ValueTask AddOllama(this IMafPool pool, string poolId, string key, string modelId, string endpoint,
         int? rps = null, int? rpm = null, int? rpd = null, int? tokensPerDay = null, string? instructions = null,
         CancellationToken cancellationToken = default)
@@ -56,6 +57,10 @@ public static class MafPoolOllamaExtension
     /// <summary>
     /// Unregisters an Ollama model from the agent pool and removes the associated cache entry.
     /// </summary>
+    /// <param name="pool">Pool that supplies the reusable resource.</param>
+    /// <param name="poolId">Identifier of the target pool.</param>
+    /// <param name="key">Key used to locate the target entry.</param>
+    /// <param name="cancellationToken">Token used to cancel the operation.</param>
     /// <returns>True if the entry existed and was removed; false if it was not present.</returns>
     public static ValueTask<bool> RemoveOllama(this IMafPool pool, string poolId, string key, CancellationToken cancellationToken = default)
     {
