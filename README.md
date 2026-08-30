@@ -13,16 +13,26 @@ Provides Ollama-specific registration extensions for `IMafPool`, enabling integr
 dotnet add package Soenneker.Maf.Pool.Ollama
 ```
 
-## Quick start
+## Usage
 
 ```csharp
 using Soenneker.Maf.Pool.Ollama;
+using Soenneker.Maf.Pool.Abstract;
 
-IMafPool pool = /* obtain from your application */;
-await pool.AddOllama("value", "value", "value", "value", default);
+await pool.AddOllama(
+    poolId: "chat",
+    key: "local-primary",
+    modelId: "llama3.2",
+    endpoint: "http://localhost:11434",
+    rpm: 60,
+    instructions: "Answer concisely.",
+    cancellationToken: cancellationToken);
+
+(AIAgent? agent, IMafPoolEntry? entry) =
+    await pool.GetAvailable("chat", cancellationToken);
 ```
 
-Registers an Ollama model in the agent pool with optional rate/token limits.
+The Ollama server and requested model must already be available. Registration does not start Ollama or pull the model.
 
 ## What you get
 
@@ -37,4 +47,7 @@ Registers an Ollama model in the agent pool with optional rate/token limits.
 
 ## Practical notes
 
-- Cancellation stops pending work; it does not undo work that has already completed.
+- The agent is created lazily and reused until its entry is removed.
+- Omitted instructions default to `You are a helpful assistant running locally via Ollama.`
+- Checkout consumes one request from the configured quota. `tokensPerDay` is not reconciled against actual model token usage.
+- Treat non-loopback HTTP endpoints as unencrypted; use an appropriately secured endpoint for remote Ollama servers.
